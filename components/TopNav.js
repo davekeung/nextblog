@@ -16,7 +16,7 @@ return (
   <>
   <div className="d-flex"> 
     <Link className="nav-link" href="/dashboard/user"> 
-              Dashboard 
+              {data?.user?.name} 
     </Link> 
     <a className="nav-link pointer" onClick={() => signOut({callbackUrl: "/login"})}> 
               Logout 
