@@ -15,5 +15,5 @@ const nextConfig = {
 }; 
  
 module.exports = nextConfig; 
-//http://localhost:3000/api/auth/callback/google
+//577743334006-skrp2ka89l0t9r2o0toncf9aesikiknr.apps.googleusercontent.com
 //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
