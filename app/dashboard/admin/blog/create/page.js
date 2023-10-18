@@ -29,20 +29,20 @@ export default function AdminBlogCreate() {
       formData.append("file", file); 
       formData.append( 
         "upload_preset", 
-        process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET 
+        process.env.CLOUDINARY_UPLOAD_PRESET 
       ); // replace with your upload_preset 
  
       // upload to cloudinary 
       try { 
         const response = await 
-fetch(process.env.NEXT_PUBLIC_CLOUDINARY_URL, { 
+fetch(process.env.CLOUDINARY_URL, { 
           method: "POST", 
           body: formData, 
         }); 
  
         if (response.ok) { 
           const data = await response.json(); 
-          setImage(data.secure_url); 
+          setImage(data.secure_url); //https instead of http
         } else { 
           console.log("Image upload failed"); 
         } 
@@ -57,7 +57,7 @@ fetch(process.env.NEXT_PUBLIC_CLOUDINARY_URL, {
   const createBlog = async () => { 
     try { 
       const response = await fetch( 
-        `${process.env.NEXT_PUBLIC_API}/admin/blog`, 
+        `${process.env.API}/admin/blog`, 
         { 
           method: "POST", 
           headers: { 
