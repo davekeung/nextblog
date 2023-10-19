@@ -1,7 +1,7 @@
 import CredentialsProvider from "next-auth/providers/credentials"; 
 import GoogleProvider from "next-auth/providers/google"
 import User from "@/models/user"; 
-import bcrypt from "bcrypt"; 
+import bcrypt from "bcryptjs"; 
 import dbConnect from "@/utils/dbConnect"; 
  
 export const authOptions = { 
