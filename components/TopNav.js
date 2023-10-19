@@ -1,14 +1,32 @@
 import Link from "next/link"; 
 import { useSession, signOut } from "next-auth/react";
+import { useSearch } from "@/context/search"; 
 
 export default function TopNav() { 
   const {data, status} = useSession();
   console.log("data => ", data, " status => ", status);
+
+  const { searchQuery, setSearchQuery, fetchSearchResults } = useSearch(); 
+
 return ( 
 <nav className="nav shadow p-2 justify-content-between mb-3"> 
 <Link className="nav-link" href="/"> 
         BLOG 
 </Link> 
+
+<form className="d-flex" role="search" onSubmit={fetchSearchResults}> 
+  <input 
+    className="form-control" 
+    type="search" 
+    placeholder="Search" 
+    aria-label="Search" 
+    onChange={(e) => setSearchQuery(e.target.value)} 
+    value={searchQuery} 
+  /> 
+  <button className="btn" type="submit" style={{ borderRadius: "20px" }}> 
+    &#128270; 
+  </button>
+ </form>; 
 
 
 {status === "authenticated" ? (

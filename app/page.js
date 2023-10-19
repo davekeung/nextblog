@@ -33,6 +33,11 @@ async function getBlogs(searchParams) {
   const data = await response.json(); 
   return data; 
 } 
+
+export const metadata = {
+  title: "Latest Blogs",
+  description: "bla bla bla bla",
+};
  
 export default async function Home({ searchParams = { page: "1" } }) { 
   // console.log("searchParams => ", searchParams); 
