@@ -4,6 +4,7 @@
  
 import queryString from "query-string"; 
 import Link from "next/link"; 
+import ListBlog from "@/components/blogs/BlogList";
  
 async function getBlogs(searchParams) { 
   const urlParams = { 
@@ -45,7 +46,7 @@ export default async function Home({ searchParams = { page: "1" } }) {
     <main> 
       <p className="text-center lead fw-bold">Blogs {blogs?.length}</p> 
  
-      <pre>{JSON.stringify(blogs, null, 4)}</pre> 
+      <ListBlog blogs={blogs} /> 
  
       <div className="d-flex justify-content-center"> 
         <nav aria-label="Page navigation"> 

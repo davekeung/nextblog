@@ -13,8 +13,9 @@ export default function RootLayout({ children }) {
         <SessionProvider>
           <Toaster />
           <TopNav />
+          {children}
         </SessionProvider>
-        {children}</body>
+        </body>
     </html>
   )
 }
