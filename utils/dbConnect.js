@@ -9,28 +9,37 @@ const dbConnect = async () => {
     mongoose.connect(process.env.DB_URI);
 }
 
-export default dbConnect;
+//export default dbConnect;
 
-const config = {
-    user: 'test',
-    password: '1000',
-    server: '.\sqlexpress',
-    database: 'DATABASE_NAME',
-    port: 1433,
+
+const dbConfig = {
+    user: 'SpeedyEXT',
+    password: 'SpeedyRR&%',
+    server: 'tbiztalk-sql',
+    database: 'Speedy_Website',
     options: {
-        instancename: 'SQLEXPRESS',
-        trustedconnection: true,
-        trustServerCertificate: true
+      encrypt: true, // Use this if you're on Windows Azure
+      trustServerCertificate: true, // Use this if you're on Windows Azure
     },
-}
+  };
 
-export async function ExcuteQueryFromMSSQL(query, options) {
+  export default async function ExcuteQueryFromMSSQL(query, options) {
     try {
-        let conn = await sql.connect(config);
+        let conn = await sql.connect(dbConfig);
         let result = await conn.request().query(query);
-        return {data: result.recordsets, status:200};
+        return {Email: result.recordsets[0][0].Email, Password:result.recordsets[0][0].Password ,Token:result.recordsets[0][0].Token, Name : result.recordsets[0][0].FirstName + ' ' + result.recordsets[0][0].LastName } ;
     }
     catch (error) {
         console.log(error);
     }
 }
+
+export const connectMSSQLDB = async () => {
+    try {
+      await sql.connect(dbConfig);
+      console.log('Connected to MSSQL');
+    } catch (error) {
+      console.error('Error connecting to MSSQL:', error);
+    }
+  };
+

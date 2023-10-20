@@ -6,13 +6,15 @@ import { signIn } from "next-auth/react";
 import { SearchParamsContext } from "next/dist/shared/lib/hooks-client-context.shared-runtime";
  
 export default function Login() { 
-  const [email, setEmail] = useState("ryan@gmail.com"); 
-  const [password, setPassword] = useState("rrrrrr"); 
+  //const [email, setEmail] = useState("ryan@gmail.com"); 
+  const [email, setEmail] = useState("test.user1@test.com"); 
+  //const [password, setPassword] = useState("rrrrrr"); 
+  const [password, setPassword] = useState("Smart123*"); 
   const [loading, setLoading] = useState(false); 
  
   const router = useRouter(); 
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/";
+  const callbackUrl = searchParams.get("callbackUrl") || "/speedypage";
  
   const handleSubmit = async (e) => { 
     e.preventDefault(); 

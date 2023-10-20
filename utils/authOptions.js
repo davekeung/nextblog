@@ -2,7 +2,9 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google"
 import User from "@/models/user"; 
 import bcrypt from "bcryptjs"; 
+//import dbConnect from "@/utils/dbConnect"; 
 import dbConnect from "@/utils/dbConnect"; 
+import getSwcSHA1 from "./speedyHash";
  
 export const authOptions = { 
   session: { 
@@ -15,35 +17,37 @@ export const authOptions = {
     }), 
     CredentialsProvider({ 
       async authorize(credentials, req) { 
-        dbConnect(); 
+        const { email, password } = credentials;
+        const SQLstatement = "select * from [user] where email = '"+ email +"'";
+        const SQLuser = await dbConnect(SQLstatement);
+        //const user = await User.findOne({ email }); 
  
-        const { email, password } = credentials; 
- 
-        const user = await User.findOne({ email }); 
- 
-        if (!user) { 
+        if (!SQLuser) { 
           throw new Error("Invalid email or password"); 
         } 
- 
         // If the user has no password (i.e., they signed up via a social network), throw an error 
-        if (!user.password) { 
-          throw new Error("Please login via the method you used to sign up"); 
-        } 
- 
-        const isPasswordMatched = await bcrypt.compare(password, 
-user.password); 
- 
+        //if (!user.password) { 
+        //  throw new Error("Please login via the method you used to sign up"); 
+        //} 
+
+        
+        const hasdedPassword = getSwcSHA1(SQLuser.Token.toLowerCase() +':' +password )
+        const isPasswordMatched = hasdedPassword===SQLuser.Password; 
         if (!isPasswordMatched) { 
           throw new Error("Invalid email or password"); 
         } 
- 
+        const user = new User({ 
+          name : SQLuser.Name, 
+          email : SQLuser.Email, 
+          password: SQLuser.Password, 
+        })
         return user; 
       }, 
     }), 
   ], 
   callbacks: { 
     async signIn({ user }) { 
-      dbConnect(); 
+    /*  dbConnect(); 
    
       const { email } = user; 
    
@@ -58,23 +62,24 @@ user.password);
           image: user.image, 
         }); 
       } 
-   
+   */
       return true; 
     }, 
     jwt: async ({ token, user }) => { 
-      const userByEmail = await User.findOne({ email: token.email }); 
-      userByEmail.password = undefined; 
+      const userByEmail = user;
       token.user = userByEmail; 
+      token.password = "";
+      console.log(token)
       return token; 
     }, 
     session: async ({ session, token }) => { 
-      const userByEmail = await User.findOne({ email: token.email }); 
-      userByEmail.password = undefined; 
+      console.log(token)
+      const userByEmail = token;
       session.user = userByEmail; 
       return session; 
     },  
   },
-  secret: process.env.NEXT_AUTH_SECRET, 
+  secret: process.env.NEXTAUTH_SECRET, 
   pages: { 
     signIn: "/login", 
   }, 
