@@ -19,27 +19,22 @@ export const authOptions = {
       async authorize(credentials, req) { 
         const { email, password } = credentials;
         
-        const SQLuser = await GetUserfromSPeedyWebsite(email);
+        const SpeedyUser = await GetUserfromSPeedyWebsite(email);
         //const user = await User.findOne({ email }); 
  
-        if (!SQLuser) { 
+        if (!SpeedyUser) { 
           throw new Error("Invalid email or password"); 
         } 
-        // If the user has no password (i.e., they signed up via a social network), throw an error 
-        //if (!user.password) { 
-        //  throw new Error("Please login via the method you used to sign up"); 
-        //} 
-
         
-        const hasdedPassword = getSwcSHA1(SQLuser.Token.toLowerCase() +':' +password )
-        const isPasswordMatched = hasdedPassword===SQLuser.Password; 
+        const hasdedPassword = getSwcSHA1(SpeedyUser.Token.toLowerCase() +':' +password )
+        const isPasswordMatched = hasdedPassword===SpeedyUser.Password; 
         if (!isPasswordMatched) { 
           throw new Error("Invalid email or password"); 
         } 
         const user = new User({ 
-          name : SQLuser.Name, 
-          email : SQLuser.Email, 
-          password: SQLuser.Password, 
+          name : SpeedyUser.Name, 
+          email : SpeedyUser.Email, 
+          password: SpeedyUser.Password, 
         })
         return user; 
       }, 
