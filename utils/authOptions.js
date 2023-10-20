@@ -3,7 +3,7 @@ import GoogleProvider from "next-auth/providers/google"
 import User from "@/models/user"; 
 import bcrypt from "bcryptjs"; 
 //import dbConnect from "@/utils/dbConnect"; 
-import dbConnect from "@/utils/dbConnect"; 
+import GetUserfromSPeedyWebsite from "@/utils/dbConnect"; 
 import getSwcSHA1 from "./speedyHash";
  
 export const authOptions = { 
@@ -18,8 +18,8 @@ export const authOptions = {
     CredentialsProvider({ 
       async authorize(credentials, req) { 
         const { email, password } = credentials;
-        const SQLstatement = "select * from [user] where email = '"+ email +"'";
-        const SQLuser = await dbConnect(SQLstatement);
+        
+        const SQLuser = await GetUserfromSPeedyWebsite(email);
         //const user = await User.findOne({ email }); 
  
         if (!SQLuser) { 

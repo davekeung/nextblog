@@ -23,7 +23,8 @@ const dbConfig = {
     },
   };
 
-  export default async function ExcuteQueryFromMSSQL(query, options) {
+  export default async function GetUserfromSPeedyWebsite(email, options) {
+    const query = "select * from [user] where email = '"+ email +"'";
     try {
         let conn = await sql.connect(dbConfig);
         let result = await conn.request().query(query);
@@ -34,12 +35,4 @@ const dbConfig = {
     }
 }
 
-export const connectMSSQLDB = async () => {
-    try {
-      await sql.connect(dbConfig);
-      console.log('Connected to MSSQL');
-    } catch (error) {
-      console.error('Error connecting to MSSQL:', error);
-    }
-  };
 
